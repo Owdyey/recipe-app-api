@@ -36,7 +36,11 @@ RUN apk update && apk add --no-cache \
     postgresql-dev \
     python3-dev \
     py3-setuptools \
-    build-base
+    build-base \
+    postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-dev \
+        build-base postgresql-dev musl-dev && \
+    apk del .tmp-build-dev
 
 # Install virtualenv
 RUN python -m ensurepip && \
@@ -69,3 +73,4 @@ ENV PATH="/py/bin:$PATH"
 USER django-user
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
